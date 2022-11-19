@@ -27,15 +27,19 @@ configure do
   set :app_cached, MemCache.new('localhost:11211')
 end
 =end
-app_cached = MemCache.new('localhost:11211')
-get '/' do
+class MyApp < Sinatra::Base
+  app_cached = MemCache.new('localhost:11211')
   @work = app_cached['W']
-  if @work.nil?
-    puts "nil!!!!"
-    @work = Work.first
-    # expire は秒単位
-    app_cached.set('W', @work, 10)
+  get '/' do
+    "Hello"
   end
-  "#{@work.store.name}"
+  get '/test' do
+    if @work.nil?
+      puts "nil!!!!"
+      @work = Work.first
+      # expire は秒単位
+      app_cached.set('W', @work, 10)
+    end
+    "#{@work.store.name}"
+  end
 end
-

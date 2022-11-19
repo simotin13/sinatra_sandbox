@@ -7,3 +7,6 @@ gem "pry-byebug"
 gem "activerecord"
 gem "sqlite3"
 gem "memcache-client"
+gem "rspec"
+gem "rack-test"
+
