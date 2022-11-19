@@ -22,24 +22,17 @@ Dir.glob("./models/*.rb").each do |entry|
    require filename
 end
 
-=begin
-configure do
-  set :app_cached, MemCache.new('localhost:11211')
-end
-=end
 class MyApp < Sinatra::Base
+  # コントローラファイルの読み込み
+  Dir.glob("./controllers/**/*").each do |entry|
+    if /\.rb/ =~ entry
+      require entry
+    end
+  end
+
+  ROUTES = {
+    '/' => RootController
+  }
   app_cached = MemCache.new('localhost:11211')
   @work = app_cached['W']
-  get '/' do
-    "Hello"
-  end
-  get '/test' do
-    if @work.nil?
-      puts "nil!!!!"
-      @work = Work.first
-      # expire は秒単位
-      app_cached.set('W', @work, 10)
-    end
-    "#{@work.store.name}"
-  end
 end

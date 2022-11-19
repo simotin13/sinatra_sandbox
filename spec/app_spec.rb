@@ -9,7 +9,7 @@ describe "MyApp のテスト" do
   include Rack::Test::Methods
 
   def app
-    MyApp
+    RootController
   end
 
   it "return Hello" do
